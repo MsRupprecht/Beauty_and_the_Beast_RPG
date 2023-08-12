@@ -406,9 +406,8 @@ distract "+inhabitant.name+"?\n\
                                 else:
                                     print(".\n.\n.\n.    Please try again.\n.\n.\n.\n")
 
-
+                            #ask if they have petals option
                             #walk away option
-                            #distract option
 
                             option2A= False
 
