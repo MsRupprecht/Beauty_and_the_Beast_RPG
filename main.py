@@ -230,6 +230,8 @@ bag_bimbettes = Backpack("The Bimbettes' backpack")
 bimbettes.set_backpack(bag_bimbettes)
 bag_posse = Backpack("Gaston's posse's backpack")
 posse.set_backpack(bag_posse)
+bag_beast = Backpack("The Beast's backpack")
+beast.set_backpack(bag_beast)
 
 
 
@@ -240,20 +242,25 @@ castle=RPGInfo("'Investigating the Beast'")
 ### Gameplay ###
 
 # Initial conditions and introduction
-print(gaston.get_backpack())
 current_room=entry
 playing=True
 castle.welcome()
+
 print("-----")
 castle.intro()
+input("Press any key to continue.\n\
+>> ")
+castle.castle_image()
 print("-----")
 print("There are",Room.number_of_rooms,"rooms in the castle to explore.")
 print("The Beast is not known for taking visitors, so he will take some \
-convincing.  \nHe has friends in the castle, and if you make a good impression \
-they might pass along a good word and warm him up for you.  \nThey will update \
-you on his mood as you meet them.")
+convincing.  \n\
+He has friends in the castle, and if you make a good impression \
+they might pass along a good word and warm him up for you.  \n\
+They will update you on his mood as you meet them.")
 print("Thanks to your study of the legend of the Beast, you know to keep an \
 eye open for anything related to his enchanted rose.")
+input("Press any key to enter the castle.")
 ### In here we need information about how to play the game,
 # ie enter a for option [a] and such
 
@@ -299,12 +306,11 @@ while playing == True:
                     # Check if friend or enemy, then give response
                         if isinstance(inhabitant,Friend):
                             if command3_count == 0:
-                                print("-----\nI have lived and worked in \
-the castle for years. \n\
+                                print("-----\n\
+                                      I have lived and worked in the castle for years. \n\
 How can I help you?")
                             option3A = True
-                            command3 = input("-----\nWhat action would \
-you like to take next?\n\
+                            command3 = input("-----\nWhat action would you like to take next?\n\
 [a] Ask if they have any information about the Beast.\n\
 [b] Ask if they have any object that could help you.\n\
 [c] Ask them to talk to the Beast on your behalf.\n\
@@ -322,8 +328,7 @@ you like to take next?\n\
                                         option3A = False
                                 elif command3.lower() == "b":
                                     if inhabitant.get_gift() is not None:
-                                        print("I have something special that will help you win \
-the Beast's favour.")
+                                        print("I have something special that will help you win the Beast's favour.")
                                         print("A",inhabitant.gift.get_name(),"appears in your backpack.")
                                         bag.set_contents(inhabitant.gift)
                                         bag.add_petal()
@@ -335,14 +340,12 @@ the Beast's favour.")
                                         option3A = False
                                 elif command3.lower() == "c":
                                     if inhabitant.get_beast_influence() == True:
-                                        print("-----\nOf course! I'll speak to \
-him and let him know you can be trusted.")
+                                        print("-----\nOf course! I'll speak to him and let him know you can be trusted.")
                                         beast.increase_heart()
                                         inhabitant.change_beast_influence()
                                         option3A = False
                                     else:
-                                        print("-----\nI have already spoken to the Beast \
-for you.  \n\
+                                        print("-----\nI have already spoken to the Beast for you.  \n\
 I don't think talking to him again would be helpful.")
                                         option3A = False
                                 elif command3.lower() == "d":
@@ -410,12 +413,42 @@ What do you want?\n\
                             option2A= False
 
                         elif isinstance(inhabitant,Beast):
-                            print("-----\nI am the Beast")
-                            option2A = False
-                        else:
-                            print(".\n.\n.\n.    Please try again.\n.\n.\n.\n")
+                            print("-----\nI am the Beast and this is my castle.")
+                            option3C = True
+                            if inhabitant.get_heart() <= 5:
+                                print("You are no friend of mine - GET OUT!")
+                                option3C = False
+                                option2A = False
+                                optionA = False
+                            elif inhabitant.get_heart()>5:
+                                command3C = input("A better question is, what are you doing here?\n\
+[a] Offer the beast the"+str(bag.get_petal_count())+"rose petals you collected.\n\
+[b] Run away")
+                                if command3C.lower() == "a":
+                                    print("option a")
+                                    for item in bag.get_contents():
+                                        if isinstance(item,Petal):
+                                            bag.remove_contents(item)
+                                            bag_beast.set_contents(item)
+                                            inhabitant.increase_heart()
+                                    print("The Beast's mood is now",inhabitant.get_heart(),"/ 10.")
+                                    if inhabitant.get_heart == 10:
+                                        print("The Beast is ready to talk.")
+                                        print("More stages will go in here")
+                                        option3C = False
+                                    else:
+                                        print("The Beast is not ready to talk yet.  You must either get more of his castle friends to put in a good word for you, or find more rose petals to return to him.")
+                                        option3C = False
+                                elif command3C.lower() == "b":
+                                    option3C = False
+                                else:
+                                    print(".\n.\n.\n.    Please try again.\n.\n.\n.\n")
+                                option2A = False
+                            else:
+                                print(".\n.\n.\n.    Please try again.\n.\n.\n.\n")
                 elif command2.lower() == "b":
                     optionA = False
+
                 else:
                     print(".\n.\n.\n.    Please try again.\n.\n.\n.\n")
             else:
