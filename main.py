@@ -379,8 +379,7 @@ What do you want?\n\
                             while option3B == True:
                                 if command3.lower() == "a":
                                     print("In your bag you have:",bag.get_contents_names())
-                                    combat_item_str = input("What will you use to try to \
-distract "+inhabitant.name+"?\n\
+                                    combat_item_str = input("What will you use to try to distract "+inhabitant.name+"?\n\
 >> ")
                                     
                                     if combat_item_str in bag.get_contents_names():
@@ -398,7 +397,7 @@ distract "+inhabitant.name+"?\n\
                                         option3B = False
                                 # Ask if they have petals
                                 elif command3.lower() == "b":
-                                    if inhabitant.get_petal_count() == 0:
+                                    if inhabitant.backpack.get_petal_count() == 0:
                                         print("No, I do not have any rose petals.")
                                     elif inhabitant.get_petal_count() == 1:
                                         print("Yes, I have a rose petal.\nIf you found my favourite item in the castle, I might consider a trade.")
@@ -409,11 +408,9 @@ distract "+inhabitant.name+"?\n\
                                 elif command3.lower() == "c":
                                     option3B = False
                                     option2A = False
+                                    optionA = False
                                 else:
                                     print(".\n.\n.\n.    Please try again.\n.\n.\n.\n")
-
-                            #ask if they have petals option
-                            #walk away option
 
                             option2A= False
 
