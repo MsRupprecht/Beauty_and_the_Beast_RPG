@@ -371,7 +371,7 @@ What do you want?\n\
 >> ") #update the character class for individual responses
                                 option3B = True
                                 command3 = input("-----\nWhat action would you like to take?\n\
-[a] Distract them with something from your bag.\n\
+[a] Try to distract them with something from your bag.\n\
 [b] Ask them if they have any rose petals.\n\
 [c] Walk away.\n\
 >> ")
@@ -396,11 +396,17 @@ distract "+inhabitant.name+"?\n\
                                     else:
                                         print("That item is not in your backpack.")
                                         option3B = False
+                                # Ask if they have petals
                                 elif command3.lower() == "b":
-                                    print("option B")
+                                    if inhabitant.get_petal_count() == 0:
+                                        print("No, I do not have any rose petals.")
+                                    elif inhabitant.get_petal_count() == 1:
+                                        print("Yes, I have a rose petal.\nIf you found my favourite item in the castle, I might consider a trade.")
+                                    else:
+                                        print("I have",inhabitant.get_petal_count(),"rose petals.\nIf you found my favourite item in the castle, I might consider a trade.")
                                     option3B = False
+                                # Walk away
                                 elif command3.lower() == "c":
-                                    print("Option C")
                                     option3B = False
                                     option2A = False
                                 else:
