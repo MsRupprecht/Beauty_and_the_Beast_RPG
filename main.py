@@ -397,12 +397,7 @@ What do you want?\n\
                                         option3B = False
                                 # Ask if they have petals
                                 elif command3.lower() == "b":
-                                    if inhabitant.backpack.get_petal_count() == 0:
-                                        print("No, I do not have any rose petals.")
-                                    elif inhabitant.get_petal_count() == 1:
-                                        print("Yes, I have a rose petal.\nIf you found my favourite item in the castle, I might consider a trade.")
-                                    else:
-                                        print("I have",inhabitant.get_petal_count(),"rose petals.\nIf you found my favourite item in the castle, I might consider a trade.")
+                                    inhabitant.ask_petal_count()
                                     option3B = False
                                 # Walk away
                                 elif command3.lower() == "c":

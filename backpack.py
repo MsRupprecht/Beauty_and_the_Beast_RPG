@@ -35,6 +35,5 @@ class Backpack():
 
     def get_petal_count(self):
         return self.petal_count
-
-
     
+ 
