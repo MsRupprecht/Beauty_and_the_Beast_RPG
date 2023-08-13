@@ -118,6 +118,14 @@ class Enemy(Character):
 
     def get_backpack(self):
         return self.backpack
+    
+    def ask_petal_count(self):
+        if self.backpack.get_petal_count() == 0:
+            print("No, I do not have any rose petals.")
+        elif self.backpack.get_petal_count() == 1:
+            print("Yes, I have a rose petal.\nIf you found my favourite item in the castle, I might consider a trade.")
+        else:
+            print("I have",self.backpack.get_petal_count(),"rose petals.\nIf you found my favourite item in the castle, I might consider a trade.") 
 
 class Friend(Character):
 

@@ -371,7 +371,7 @@ What do you want?\n\
 >> ") #update the character class for individual responses
                                 option3B = True
                                 command3 = input("-----\nWhat action would you like to take?\n\
-[a] Distract them with something from your bag.\n\
+[a] Try to distract them with something from your bag.\n\
 [b] Ask them if they have any rose petals.\n\
 [c] Walk away.\n\
 >> ")
@@ -379,8 +379,7 @@ What do you want?\n\
                             while option3B == True:
                                 if command3.lower() == "a":
                                     print("In your bag you have:",bag.get_contents_names())
-                                    combat_item_str = input("What will you use to try to \
-distract "+inhabitant.name+"?\n\
+                                    combat_item_str = input("What will you use to try to distract "+inhabitant.name+"?\n\
 >> ")
                                     
                                     if combat_item_str in bag.get_contents_names():
@@ -396,18 +395,17 @@ distract "+inhabitant.name+"?\n\
                                     else:
                                         print("That item is not in your backpack.")
                                         option3B = False
+                                # Ask if they have petals
                                 elif command3.lower() == "b":
-                                    print("option B")
+                                    inhabitant.ask_petal_count()
                                     option3B = False
+                                # Walk away
                                 elif command3.lower() == "c":
-                                    print("Option C")
                                     option3B = False
                                     option2A = False
+                                    optionA = False
                                 else:
                                     print(".\n.\n.\n.    Please try again.\n.\n.\n.\n")
-
-                            #ask if they have petals option
-                            #walk away option
 
                             option2A= False
 
