@@ -6,6 +6,7 @@ from character import Friend
 from character import Beast
 from rpginfo import RPGInfo
 from backpack import Backpack
+from progress_bar import Progress_bar
 
 # Rooms - instantiating and setting characteristics
 entry=Room("entry hall")
@@ -218,7 +219,7 @@ chip.set_gift(petal6)
 
 
 # Backpack set up
-bag=Backpack("Belle's backpack")
+bag = Backpack("Belle's backpack")
 bag.set_description("A roomy bag with some basic supplies and space for more.")
 bag.set_contents(lantern)
 
@@ -233,6 +234,10 @@ posse.set_backpack(bag_posse)
 bag_beast = Backpack("The Beast's backpack")
 beast.set_backpack(bag_beast)
 
+# Progress bar set up
+intruders_bar = Progress_bar("Intruders",4)
+petals_bar = Progress_bar("Petals",6)
+mood_bar = Progress_bar("Beast's Mood",10)
 
 
 # Instantiating the game information
@@ -275,7 +280,7 @@ while playing == True:
     command = input("\nWhat action would you like to take? \n\
 [a] check if anyone is in the room\n\
 [b] look for items in the room\n\
-[c] check your backpack\n\
+[c] check your backpack and progress status\n\
 [d] move to another room\n\
 [e] Exit game \n\
 >> ")
@@ -516,7 +521,16 @@ May the odds be ever in your favour.\n")
         optionC = True
         while optionC == True:
             print("-----\nYour bag contains:",bag.get_contents_names())
+            print("-----\nYour progress so far:")
+            intruders_bar.set_progress(Enemy.distracted_enemies)
+
+            intruders_bar.display_progress()
+            petals_bar.set_progress(bag.get_petal_count())
+            petals_bar.display_progress()
+            mood_bar.set_progress(beast.get_heart())
+            mood_bar.display_progress()
             optionC = False
+
 
     # Move to another room
     elif command.lower() == "d":
