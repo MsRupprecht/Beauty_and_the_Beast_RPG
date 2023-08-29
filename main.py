@@ -131,10 +131,10 @@ from his rose.  \nBut they each have a weakness that will distract them \
 just long enough, if you happen to be missing anything.")
 east_wing.set_character(wardrobe)
 
-plumette=Friend("Plumette","A feather duster who is going steady \
-with Lumiere.")
-plumette.set_conversation("Lumiere?  I've been burnt by him before.")
-balcony.set_character(plumette)
+# plumette=Friend("Plumette","A feather duster who is going steady \
+# with Lumiere.")
+# plumette.set_conversation("Lumiere?  I've been burnt by him before.")
+# balcony.set_character(plumette)
 
 gaston=Enemy("Gaston","A manly man.  A pure paragon.")
 gaston.set_conversation("I'm especially good at expectorating!")
@@ -194,7 +194,7 @@ servants.link_item(mirror)
 
 enchanted_mirror=Item("enchanted mirror")
 enchanted_mirror.set_description("A magic mirror that lets the viewer \
-see anyone anywhere.")
+see anyone, anywhere.")
 beast.set_gift(enchanted_mirror)
 
 lantern=Item("lantern")
@@ -210,8 +210,8 @@ petal2=Petal("rose petal from Lumiere")
 lumiere.set_gift(petal2)
 petal3=Petal("rose petal from Lumiere")
 cogsworth.set_gift(petal3)
-petal4=Petal("rose petal from Plumette")
-plumette.set_gift(petal4)
+# petal4=Petal("rose petal from Plumette")
+# plumette.set_gift(petal4)
 petal5=Petal("rose petal from Wardrobe")
 wardrobe.set_gift(petal5)
 petal6=Petal("rose petal from Chip")
@@ -235,8 +235,8 @@ bag_beast = Backpack("The Beast's backpack")
 beast.set_backpack(bag_beast)
 
 # Progress bar set up
-intruders_bar = Progress_bar("Intruders",4)
-petals_bar = Progress_bar("Petals",6)
+intruders_bar = Progress_bar("Intruders Distracted",4)
+petals_bar = Progress_bar("Petals Collected",6)
 mood_bar = Progress_bar("Beast's Mood",10)
 
 
@@ -276,54 +276,64 @@ while playing == True:
 
 
     current_room.print_basic_room_description()
-    
+    # Level One Menu - What to do in the room
+    # Decide to either check for inhabitants, look for items to collect
+    # check your backpack, check your progress, or move to a different room
     command = input("\nWhat action would you like to take? \n\
-[a] check if anyone is in the room\n\
-[b] look for items in the room\n\
-[c] check your backpack and progress status\n\
-[d] move to another room\n\
+[a] Check if anyone is in the room\n\
+[b] Look for items in the room\n\
+[c] Check your backpack and progress status\n\
+[d] Move to another room\n\
 [e] Exit game \n\
 >> ")
 
-
-    # Decide to either check for inhabitants, look for items to collect
-    # check your backpack, or move to a different room
-
     # Check who is in the room
+    # Sub menus include character interactions
     if command.lower() == "a":
         optionA = True
         # While loop keeping it at the character level
         while optionA == True:
+
             # Introduce the character
             inhabitant = current_room.get_character()
             if inhabitant is not None:
                 print("-----\n"+inhabitant.get_name(),"is here!")
                 print("Biography:",inhabitant.describe())
-                # Decide what to do next
+                
+                # Decide if you want to interact
+                # Sub menus dictate how to interact
                 command2 = input("-----\nWhat action would you like to take?\n\
 [a] Ask "+str(inhabitant.get_name())+" why they are here.\n\
 [b] Walk away.\n\
 >> ")
+
+                # Interact with the character
                 if command2.lower() == "a":
                     option2A = True
                     command3_count = 0
+                    # While loop to keep it at the interaction level
                     while option2A == True:
+                    
                     # Check if friend or enemy, then give response
+                        # FRIEND response path
                         if isinstance(inhabitant,Friend):
                             if command3_count == 0:
-                                print("-----\n\
-                                      I have lived and worked in the castle for years. \n\
+                                print("-----\nI have lived and worked in the castle for years. \n\
 How can I help you?")
                             option3A = True
-                            command3 = input("-----\nWhat action would you like to take next?\n\
+                            # While loop to keep it at the information level ~~CHANGE HERE
+                            while option3A == True:
+                                command3 = input("-----\nWhat action would you like to take next?\n\
 [a] Ask if they have any information about the Beast.\n\
 [b] Ask if they have any object that could help you.\n\
 [c] Ask them to talk to the Beast on your behalf.\n\
 [d] Check on the Beast's mood.\n\
 [e] Walk away\n\
 >> ")
-                            command3_count = command3_count+1
-                            while option3A == True:
+                                command3_count = command3_count+1
+
+
+                                # Give information about the Beast, if known
                                 if command3.lower() == "a":
                                     if inhabitant.get_beast_info() is not None:
                                         print("-----\n"+inhabitant.get_beast_info())
@@ -331,6 +341,8 @@ How can I help you?")
                                     else:
                                         print("-----\nI don't know anything useful about the Beast.")
                                         option3A = False
+                                
+                                # Offer an object to help, if they have it
                                 elif command3.lower() == "b":
                                     if inhabitant.get_gift() is not None:
                                         print("I have something special that will help you win the Beast's favour.")
@@ -343,6 +355,8 @@ How can I help you?")
                                     else:
                                         print("I do not have anything that could help you.")
                                         option3A = False
+                                
+                                # Offer to talk to the Beast, if they haven't already
                                 elif command3.lower() == "c":
                                     if inhabitant.get_beast_influence() == True:
                                         print("-----\nOf course! I'll speak to him and let him know you can be trusted.")
@@ -353,6 +367,8 @@ How can I help you?")
                                         print("-----\nI have already spoken to the Beast for you.  \n\
 I don't think talking to him again would be helpful.")
                                         option3A = False
+
+                                # Respont with the Beast's mood
                                 elif command3.lower() == "d":
                                     if beast.get_heart() < 3:
                                         print("-----\nThe Beast is not pleased.")
@@ -367,16 +383,27 @@ I don't think talking to him again would be helpful.")
                                         print("The Beast is feeling friendlier than usual. \n\
 If you bring him the four missing petals from his rose, I'm sure that would make his mood 10 / 10.")
                                         option3A = False
+                                
+                                # Exit the character level menu
                                 elif command3.lower() == "e":
                                     option3A = False
                                     option2A = False
+                                
+                                # Incorrect menu selection, loop back to top of character interaction menu
                                 else:
-                                   print(".\n.\n.\n.    Please try again.\n.\n.\n.\n")
+                                    print(".\n.\n.\n.    Please try again.\n.\n.\n.\n")
+
+                        
+                        # ENEMY response path
                         elif isinstance(inhabitant,Enemy):
-                            if command3_count == 0:
+                            if inhabitant.get_distracted_status() == True:
+                                print(inhabitant.get_name(),"is distracted with the",inhabitant.get_weakness()+".  You get no response.")
+                            
+                            # Print the dialogue only once per interaction with the menu
+                            elif command3_count == 0:
                                 print("-----\nI am no friend of the Beast, if that is what you mean.\n\
 What do you want?\n\
->> ") #update the character class for individual responses
+>> ")
                                 option3B = True
                                 command3 = input("-----\nWhat action would you like to take?\n\
 [a] Try to distract them with something from your bag.\n\
@@ -384,12 +411,15 @@ What do you want?\n\
 [c] Walk away.\n\
 >> ")
                             command3_count=command3_count+1
+                            # While loop to keep it at the enemy interaction level
                             while option3B == True:
+
+                                # Attempt to distract the enemy
                                 if command3.lower() == "a":
                                     print("In your bag you have:",bag.get_contents_names())
                                     combat_item_str = input("What will you use to try to distract "+inhabitant.name+"?\n\
 >> ")
-                                    
+                                    # Check if the chosen item is in the backpack
                                     if combat_item_str in bag.get_contents_names():
                                         #convert string into object
                                         combat_item = None
@@ -400,66 +430,139 @@ What do you want?\n\
                                         inhabitant.fight(combat_item,bag)
                                         option3B = False
 
+                                    # Item is not in the backpack, loop back up
                                     else:
                                         print("That item is not in your backpack.")
                                         option3B = False
+                                
                                 # Ask if they have petals
                                 elif command3.lower() == "b":
                                     inhabitant.ask_petal_count()
                                     option3B = False
+                                
                                 # Walk away
                                 elif command3.lower() == "c":
                                     option3B = False
                                     option2A = False
                                     optionA = False
+                                
+                                # Incorrect menu input, loop back up
                                 else:
                                     print(".\n.\n.\n.    Please try again.\n.\n.\n.\n")
 
                             option2A= False
 
+                        # BEAST response path
                         elif isinstance(inhabitant,Beast):
                             print("-----\nI am the Beast and this is my castle.")
                             option3C = True
-                            if inhabitant.get_heart() <= 5:
-                                print("You are no friend of mine - GET OUT!")
-                                option3C = False
-                                option2A = False
-                                optionA = False
-                            elif inhabitant.get_heart()>5:
-                                command3C = input("A better question is, what are you doing here?\n\
-[a] Offer the beast the"+str(bag.get_petal_count())+"rose petals you collected.\n\
-[b] Run away")
-                                if command3C.lower() == "a":
-                                    print("option a")
-                                    for item in bag.get_contents():
-                                        if isinstance(item,Petal):
-                                            bag.remove_contents(item)
-                                            bag_beast.set_contents(item)
-                                            inhabitant.increase_heart()
-                                    print("The Beast's mood is now",inhabitant.get_heart(),"/ 10.")
-                                    if inhabitant.get_heart == 10:
-                                        print("The Beast is ready to talk.")
-                                        print("More stages will go in here")
-                                        option3C = False
-                                    else:
-                                        print("The Beast is not ready to talk yet.  You must either get more of his castle friends to put in a good word for you, or find more rose petals to return to him.")
-                                        option3C = False
-                                elif command3C.lower() == "b":
+                            
+                            # Loop to keep it at the Beast interaction level
+                            while option3C == True:
+                                
+                                # If the Beast is still in a bad mood
+                                if inhabitant.get_heart() < 5: 
+                                    print("You are no friend of mine - GET OUT!")
+                                    print("...\n...\n...\n...")
+                                    print("You run out of the library quick as you can.")
+                                    current_room = balcony
                                     option3C = False
+                                    option2A = False
+                                    optionA = False
+
+                                # If the Beast is ready for visitors
                                 else:
-                                    print(".\n.\n.\n.    Please try again.\n.\n.\n.\n")
+                                    print("The Beast appears reluctant, but allows you to enter the West Wing.")
+                                    command3C = input("A better question is, what are *you* doing here?\n\
+[a] Offer the beast the "+str(bag.get_petal_count())+" rose petals you collected.\n\
+[b] Run away\n\
+>> ")
+                                    # Offer the petals
+                                    if command3C.lower() == "a":
+                                                                                        
+                                            # Give the Beast the petals
+                                            # See the mood increase
+                                            if command3C.lower() == "a":
+                                                temp_list = []
+                                                #temp list (above) to hold the petals as they transfer bags (below)
+                                                for item in bag.get_contents():
+                                                    if isinstance(item,Petal):
+                                                        temp_list.append(item)
+                                                for item in temp_list:
+                                                    bag.remove_contents(item)
+                                                    bag_beast.set_contents(item)
+                                                    inhabitant.increase_heart()
+
+                                                print("Your gift of the missing rose petals has weakened the curse's strength and he is starting to relax.")
+                                                print("The Beast's mood is now",inhabitant.get_heart(),"/ 10.")
+                                                
+                                                # If the petals boost the Beast to full power
+                                                if inhabitant.get_heart() >= 10:
+                                                    print("The Beast is ready to talk.")
+
+                                                    # If any enemies remain active
+                                                    if Enemy.distracted_enemies < 4:
+                                                        print("You move towards the Beast, but hear a rustling behind you.")
+                                                        command4C = input("What do you do?\n\
+[a] Give the Beast your full attention and introduce yourself.\n\
+[b] Turn and investigate the noise")
+                                                        if command4C.lower() == "a":
+                                                            print("You introduce yourself to the Beast and begin to explain that you have come to the castle to help him understand the needs of the community.")
+                                                            print("Suddenly, you are interrupted by a body pushing past you.")
+                                                            for character in Enemy.enemy_list:
+                                                                print("You see",character.get_name(),"run towards the Beast.")
+                                                            print("There is a struggle.  The fight moves towards the window and you see the Beast lose his balance.")
+                                                            print("The enemies of the Beast were not fully distracted, and defenestrated him before you were able to convince him to change his ways and see to the needs of the community.")
+                                                            option3C = False
+                                                            option2A = False
+                                                            optionA = False
+                                                            playing = False
+
+
+                                                        option3C = False 
+
+                                                    # If all enemies are distracted
+                                                    else:
+                                                        option3C = False 
+
+                                                
+                                                # If the petals do not yet boost the Beast to full power
+                                                else:
+                                                    print("The Beast is not ready to talk yet.  There are two ways to convince the Beast to speak with you: encouragement from his friends in the castle, or rose petals to weaken the curse.  Only then will when all his friends are supporting him and the rose is full will the spell be weak enough for the Beast to see clearly.")
+                                                    option3C = False
+                                                    option2A = False
+
+                                        
+                                    # Leave the room
+                                    elif command3C.lower() == "b":
+                                        option3C = False
+                                    
+                                    # Incorrect menu option, loop back up
+                                    else:
+                                        print(".\n.\n.\n.    Please try again.\n.\n.\n.\n")
+                                
+                                # End character interaction menu
                                 option2A = False
-                            else:
-                                print(".\n.\n.\n.    Please try again.\n.\n.\n.\n")
+                            # Incorrect menu option, loop back up
+                        else:
+                            print(".\n.\n.\n.    Please try again.\n.\n.\n.\n")
+                
+                # Walk away from the character
                 elif command2.lower() == "b":
                     optionA = False
 
+                # Incorrect menu option, loop back up
                 else:
                     print(".\n.\n.\n.    Please try again.\n.\n.\n.\n")
+
+            
+            # No characters present to interact with, loop back up to room choice menu
             else:
                 print("-----\nThere are no characters in this room.")
                 optionA = False
 
+    # Look for items in the room
+    # Sub menus include interacting with the items
     elif command.lower() == "b":
         optionB = True
         while optionB == True:
@@ -517,6 +620,7 @@ May the odds be ever in your favour.\n")
                 print(".\n.\n.\n.    Please try again.\n.\n.\n.\n")
 
     # Check backpack contents
+    # No sub menu
     elif command.lower() == "c":
         optionC = True
         while optionC == True:
@@ -531,8 +635,8 @@ May the odds be ever in your favour.\n")
             mood_bar.display_progress()
             optionC = False
 
-
     # Move to another room
+    # Sub menus are just navigation
     elif command.lower() == "d":
         optionD = True
         while optionD == True:
@@ -546,11 +650,17 @@ Use the full direction name.\n\
                 optionD = False
             else:
                 print(".\n.\n.\n.    Please try again.\n.\n.\n.\n")
+    
+    # Exit the game
+    # The End
     elif command.lower() == "e" or command.lower() == "exit":
         playing = False
+    
+    # Incorrect menu choice - loop back to level one menu
     else:
         print(".\n.\n.\n.    Please try again.\n.\n.\n.\n")
 
+# Game Over
 print("\n\
    _____              __  __   ______   \n\
   / ____|     /\     |  \/  | |  ____|  \n\

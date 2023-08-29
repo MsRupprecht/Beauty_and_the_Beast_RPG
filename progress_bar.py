@@ -25,8 +25,13 @@ class Progress_bar():
     
     def display_progress(self):
         image = ""
-        for i in range (0,self.get_progress()):
-            image = image + "[X]"
-        for i in range (0,self.get_total()-self.get_progress()):
-            image = image + "[ ]"
-        print(self.get_name()+" progress: "+image)
+        if self.get_progress() > self.get_total():
+            for i in range (0,self.get_total()):
+                image = image + "[X]"
+            print(self.get_name()+" progress: "+image)
+        else: 
+            for i in range (0,self.get_progress()):
+                image = image + "[X]"
+            for i in range (0,self.get_total()-self.get_progress()):
+                image = image + "[ ]"
+            print(self.get_name()+" progress: "+image)

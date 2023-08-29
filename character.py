@@ -53,6 +53,7 @@ class Character():
 class Enemy(Character):
     enemy_total = 0
     distracted_enemies = 0
+    enemy_list = []
     
     # Create an enemy
     def __init__(self,char_name,char_description):
@@ -62,6 +63,7 @@ class Enemy(Character):
         self.item = []
         self.combat_count = 0
         self.distracted = False
+        Enemy.enemy_list.append(self)
 
         
     # Set the enemy's weakness
@@ -115,6 +117,7 @@ class Enemy(Character):
                         for item in player_backpack.get_contents():
                             if isinstance(item,Petal):
                                 player_backpack.remove_contents(item)
+                                player_backpack.subtract_petal()
                                 self.backpack.set_contents(item)
                                 stolen = True
                     print("You notice your backpack feels a little lighter.")
@@ -137,8 +140,6 @@ class Enemy(Character):
 
     def get_fight_history(self):
         return self.fight_history
-
-
 
     
     def ask_petal_count(self):
