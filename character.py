@@ -9,6 +9,7 @@ class Character():
         self.name = char_name
         self.description = char_description
         self.conversation = None
+        self.backpack = None
 
     # Get character name
     def get_name(self):
@@ -42,9 +43,16 @@ class Character():
             print("This is an enemy.")
         elif isinstance(self,Friend) == True:
             print("This is a friend.")
+    
+    def set_backpack(self,backpack):
+        self.backpack = backpack
+
+    def get_backpack(self):
+        return self.backpack
 
 class Enemy(Character):
     enemy_total = 0
+    distracted_enemies = 0
     
     # Create an enemy
     def __init__(self,char_name,char_description):
@@ -53,7 +61,8 @@ class Enemy(Character):
         Enemy.enemy_total = Enemy.enemy_total+1
         self.item = []
         self.combat_count = 0
-        self.backpack = None
+        self.distracted = False
+
         
     # Set the enemy's weakness
     def set_weakness(self,weakness_item):
@@ -74,6 +83,20 @@ class Enemy(Character):
             item_names.append(item.name)
         return item_names
     
+    # Set as distracted
+    def set_as_distracted(self):
+        self.distracted = True
+        Enemy.distracted_enemies = Enemy.distracted_enemies + 1
+
+    # Set as undistracted
+    def set_as_undistracted(self):
+        self.distracted = False
+    
+    # Check if distracted
+    def get_distracted_status(self):
+        return self.distracted
+
+
     # Fight with this enemy
     def fight(self,combat_item,player_backpack):
         if self.combat_count == 0:
@@ -82,6 +105,7 @@ class Enemy(Character):
                 self.combat_count = self.combat_count + 1
                 self.backpack.set_contents(combat_item)
                 player_backpack.remove_contents(combat_item)
+                self.set_as_distracted()
             else:
                 print(self.name,"isn't interested in",combat_item.get_name()+".")
                 self.combat_count = self.combat_count + 1
@@ -101,6 +125,7 @@ class Enemy(Character):
                 self.combat_count = self.combat_count + 1
                 self.backpack.set_contents(combat_item)
                 player_backpack.remove_contents(combat_item)
+                self.set_as_distracted()
                 for item in self.backpack.get_contents():
                     if isinstance(item,Petal):
                         self.backpack.remove_contents(item)
@@ -113,11 +138,8 @@ class Enemy(Character):
     def get_fight_history(self):
         return self.fight_history
 
-    def set_backpack(self,backpack):
-        self.backpack = backpack
 
-    def get_backpack(self):
-        return self.backpack
+
     
     def ask_petal_count(self):
         if self.backpack.get_petal_count() == 0:
@@ -182,7 +204,7 @@ class Beast(Character):
         self.gift = None
 
     def increase_heart(self):
-        self.heart = self.heart+1
+        self.heart = self.heart + 1
 
     def get_heart(self):
         return self.heart
