@@ -166,43 +166,45 @@ west_wing.set_character(beast)
 
 
 # Items - instantiating and setting characteristics
-portrait=Item("portrait of the royals on a day out")
+portrait = Item("portrait of the royals on a day out")
 portrait.set_description("A small oil painting commemorating the annual \
 royal hunting trip.  Gaston is seen in the bottom corner as part of the \
 team.")
 ballroom.link_item(portrait)
 
-chaise=Item("chaise lounge")
+chaise = Item("chaise lounge")
 chaise.set_description("A burgundy sofa with hand carved wooden details.")
 antechamber.link_item(chaise)
 
-tiara=Item("tiara")
+tiara = Item("tiara")
 tiara.set_description("A delicate silver and ruby tiara.")
 throne.link_item(tiara)
 
-eggs=Item("eggs")
+eggs = Item("eggs")
 eggs.set_description("5 dozen eggs")
 kitchen.link_item(eggs)
 
-mead=Item("mead")
+mead = Item("mead")
 mead.set_description("A round of mead")
 kitchen.link_item(mead)
 
-mirror=Item("mirror")
+mirror = Item("mirror")
 mirror.set_description("A pocket mirror")
 servants.link_item(mirror)
 
-enchanted_mirror=Item("enchanted mirror")
+enchanted_mirror = Item("enchanted mirror")
 enchanted_mirror.set_description("A magic mirror that lets the viewer \
 see anyone, anywhere.")
 beast.set_gift(enchanted_mirror)
 
-lantern=Item("lantern")
+planner = Item("planner")
+planner.set_description("A day planner, ready to be filled with tasks and schedules.\n\
+Includes a generous notes section for brainstorming ideas.")
+
+lantern = Item("lantern")
 lantern.set_description("A lantern, ready to be lit.")
 
-test_item=Item("test")
-test_item.set_description("test text here")
-entry.link_item(test_item)
+
 
 petal1=Petal("rose petal from Mrs. Potts")
 mrs_potts.set_gift(petal1)
@@ -506,24 +508,156 @@ What do you want?\n\
                                                         command4C = input("What do you do?\n\
 [a] Give the Beast your full attention and introduce yourself.\n\
 [b] Turn and investigate the noise")
+
+                                                        # Ignore noise, straight to defenestration scene
                                                         if command4C.lower() == "a":
                                                             print("You introduce yourself to the Beast and begin to explain that you have come to the castle to help him understand the needs of the community.")
                                                             print("Suddenly, you are interrupted by a body pushing past you.")
                                                             for character in Enemy.enemy_list:
-                                                                print("You see",character.get_name(),"run towards the Beast.")
+                                                                if character.distracted == False:
+                                                                    print("You see",character.get_name(),"run towards the Beast.")
                                                             print("There is a struggle.  The fight moves towards the window and you see the Beast lose his balance.")
                                                             print("The enemies of the Beast were not fully distracted, and defenestrated him before you were able to convince him to change his ways and see to the needs of the community.")
                                                             option3C = False
                                                             option2A = False
                                                             optionA = False
                                                             playing = False
+                                                        
+                                                        # Investigate noise - opportunity to distract
+                                                        elif command4C.lower() == "b":
+                                                            # See who is here
+                                                            if len(Enemy.active_list) > 1:
+                                                                print("You look behind you and see:")
+                                                                for character in Enemy.active_list:
+                                                                    print(character.get_name())
+                                                            elif len(Enemy.active_list) == 1:
+                                                                print("You look behind you and see",Enemy.active_list[0].get_name())
+                                                            else: 
+                                                                print("You look behind you, but don't see anyone.\n\
+                                                                      It is an old castle, so noises are bound to happen.") #THIS SHOULDN'T ACTIVATE
+
+                                                            # Open bag to see what we can distract with
+                                                            print("{} will surely ruin any chance of negotiating with the Beast.  You hope something in your backpack can be used to distract them.".format("This enemy" if len(Enemy.active_list) == 1 else "These enemies"))
+                                                            print("You open your bag and find:")
 
 
-                                                        option3C = False 
+                                                            #loop here to go through all the items in my bag to try to distract the enemy/enemies
+                                                            fighting = True
+                                                            while fighting == True and len(bag.get_contents) != 0:
+                                                                # Select combat item
+                                                                print(bag.get_contents_names)
+                                                                combat_item_str = input("What will you use to fend off the {}".format("enemy?" if len(Enemy.active_list) == 1 else "enemies?"))
+                                                                
+                                                                # Check if it is a successful distraction
+                                                                for character in Enemy.active_list:
+                                                                    if character.get_weakness() == combat_item_str:
+                                                                        print(character.get_name(), "was distracted by the", combat_item_str)
+                                                                # Remove item from my bag
+                                                                combat_item = None
+                                                                for item in bag.get_contents():
+                                                                    if item.get_name() == combat_item_str:
+                                                                        combat_item = item
+                                                                bag.remove_contents(combat_item)
 
-                                                    # If all enemies are distracted
+                                                                # If there are no enemies, end fighting
+                                                                if len(Enemy.active_list) == 0:
+                                                                    print("You successfully distracted all the enemies in the castle!  The Beast is grateful for your help, and  eager to listen to what you have to say.")
+                                                                    fighting = False
+                                                                
+                                                                # If there are still enemies, but no items left
+                                                                # End fighting and end game.
+                                                                elif len(bag.get_contents) == 0:
+                                                                    print("Your bag is empty, but the enemies are still pushing forward.")
+                                                                    print("There is a struggle.  The fight moves towards the window and you see the Beast lose his balance.")
+                                                                    print("The enemies of the Beast were not fully distracted, and defenestrated him before you were able to convince him to change his ways and see to the needs of the community.")
+                                                                    fighting = False
+                                                                    option3C = False
+                                                                    option2A = False
+                                                                    optionA = False
+                                                                    playing = False
+                                                                # If there are still enemies and items in my bag, keep looping
+                                                                else:
+                                                                    print("The",combat_item_str,"didn't distract them, so you look in your bag and try again.")
+
+                                                            # If all distracted, then go to end scene                                                   
+                                                            option3C = False
+
+                                                    # If all enemies are distracted --> Winning end scene
                                                     else:
+                                                        print("You sit down with the Beast and introduce yourself,  You explain that you are from the surrounding village and undertand that there is a lot of misinformation about the him and his history.")
+                                                        print("The Beast is a bit uncomfortable, but appreciates your point of view.")
+                                                        print("You tell him that the kingdom is in need of leadership with the resources to make postive changes, and that it would really help if he could start participating in public life again.  If he would just come out and see what people are going through, he would understand.")
+                                                        print("The Beast gets out his magic mirror, and explains that it can show him anyone, anywhere, at any time.")
+                                                        print("You think, hmmm, that's a more than a bit creepy, but will be a useful tool to illustrate your point.  You make a mental note to address this with him after you make your case.")
+
+                                                        option_end1 = True
+                                                        while option_end1 == True:
+                                                            example = input("What public works project do you want to encourage him to do first?\n\
+[a] School funding\n\
+[b] Food shortages\n\
+>> ")
+                                                            if example.lower() == "a":
+                                                                print("You have the Beast look at the school and show him how understaffed and undersupplied they are.")
+                                                                print("You explain that with proper funding, the school would be able to hire enough highly qualified and experienced teachers to properly support the students.  You remind him that the expectations and working conditions for teachers must also be reviewed if they are going to retain staff in the long term and best serve the young people in the kingdom.")
+                                                                option_end1 = False
+                                                            elif example.lower() == "b":
+                                                                print("You have the Beast look at the food bank and see how long the line is and how bare the shelves are.")
+                                                                print("You explain that with proper funding, the food bank would be able to serve every member of the community that was in need.  And even more important is proper funding and support for the kingdom's agriculture sector.  Cooperative planning amongst the different farms will help prevent the shortages of staple crops in the future.")
+                                                                option_end1 = False
+                                                            else:
+                                                                print(".\n.\n.\n.    Please try again.\n.\n.\n.\n")
+                                                        
+                                                        
+                                                        print("The Beast sits stands up and starts to pace.")
+                                                        print("I had no idea...")
+                                                        print("Sure, sometimes I would use my mirror to look at life outside the castle, but all I could ever see was the misery.  I assumed it was part of the curse that had consumed the castle.  I thought it was inevitable.")
+
+                                                        option_end2 = True
+                                                        while option_end2 == True:
+                                                            response = ("How do you want to respond to the Beast?\n\
+    [a] That is understandable, given what you went through when you were so young. \n\
+    [b] Huff, and roll your eyes. \n\
+    >> ")
+                                                            if response.lower() == "a":
+                                                                print("Thank you for understanding.")
+                                                                option_end2 = False
+                                                            elif response.lower() == "b":
+                                                                print("How was I supposed to know? I was just 10 when this all happened to me!")
+                                                                print("You respond with an apology, and remember that you are here to try to move things forward, not take out your frustrations.")
+                                                                option_end2 = False
+                                                            else:
+                                                                print(".\n.\n.\n.    Please try again.\n.\n.\n.\n")
+                                                        
+                                                        print("Well, now that you know what is happening, and that there are solutions within your control, let's do something about it.")
+                                                        print("The Beast agrees, and vows to work with his kingdom and for his kingdom.")
+                                                        print("Suddenly, you see the petals you returned to the Beast floating and the rose begins to reform itself.  Lights start sparkling around the Beast and he is returned to his human form.  The curse is lifted!")
+                                                        print("The Beast, who had resigned himself to his fate long ago, is in a state of disbelief.")
+                                                        print("You look at the Beast, and tell him that empathy is what makes us human, and the willingness to look out for each other is truly what binds us together.  As long as he stays true to that, the curse shouldn't be able to touch him.")
+                                                        print("The Beast promises to be true to his word and live every day with a thankful heart.  He asks you to be his Counsellor of State, to advise him and keep him accountable.")
+                                                        print("You accept this position, and watch as the curse continues to melt away from the castle and its inhabitants.  As you do, you feel your backpack get a bit heavier.")
+                                                        bag.set_contents(planner)
+
+                                                        option_end3 = True
+                                                        while option_end3 == True:
+                                                            choice = input("What would you like to do next?\n\
+[a] Open your bag and see what is inside.\n\
+[b] Leave that mystery alone. \n\
+>> ")
+                                                            if choice.lower() == "a":
+                                                                print("Inside your bag you see a day planner, ready for scheduling projects and brainstorming ways to serve the kingdom.")
+                                                                print("You hear the Beast ask, 'What's next?' and you know things will work out just fine.")
+                                                                option_end3 = False
+                                                                playing = False
+                                                            elif choice.lower() == "b":
+                                                                print("You think there has been more than enough excitement for one day, and it is probably time for everyone to get a good rest.")
+                                                                print("You suggest to the Beast that he visits with his friends and explain everything that has happened.  In the meantime you will rest and return in the morning to start working on a plan.")
+                                                                print("The Beast offers you a room in the East Wing of the castle, which you accept, as your home is rather far away.")
+                                                                print("In the morning, after you visit the kitchen for some breakfast, you hear noises in the library.  As you approach, you realise the Beast has gathered his enemies from around the castle and is holding his first town hall meeting.  He looks flustered, but is listening and taking notes.  You're optimistic that this is your opportunity to work hard and work worth doing.")
+                                                                option_end3 = False
+                                                                playing = False
+                                                            else:print(".\n.\n.\n.    Please try again.\n.\n.\n.\n")
                                                         option3C = False 
+                                                        playing = False
 
                                                 
                                                 # If the petals do not yet boost the Beast to full power

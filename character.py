@@ -54,6 +54,8 @@ class Enemy(Character):
     enemy_total = 0
     distracted_enemies = 0
     enemy_list = []
+    distracted_list = []
+    active_list = []
     
     # Create an enemy
     def __init__(self,char_name,char_description):
@@ -64,6 +66,7 @@ class Enemy(Character):
         self.combat_count = 0
         self.distracted = False
         Enemy.enemy_list.append(self)
+        Enemy.active_list.append(self)
 
         
     # Set the enemy's weakness
@@ -89,6 +92,8 @@ class Enemy(Character):
     def set_as_distracted(self):
         self.distracted = True
         Enemy.distracted_enemies = Enemy.distracted_enemies + 1
+        Enemy.distracted_list.append(self)
+        Enemy.active_list.remove(self)
 
     # Set as undistracted
     def set_as_undistracted(self):
@@ -149,6 +154,9 @@ class Enemy(Character):
             print("Yes, I have a rose petal.\nIf you found my favourite item in the castle, I might consider a trade.")
         else:
             print("I have",self.backpack.get_petal_count(),"rose petals.\nIf you found my favourite item in the castle, I might consider a trade.") 
+
+
+
 
 class Friend(Character):
 
