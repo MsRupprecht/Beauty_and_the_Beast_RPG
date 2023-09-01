@@ -261,24 +261,24 @@ current_room=entry
 playing=True
 castle.welcome()
 
-# print("-----")
-# castle.intro()
-# input("Press enter to continue.\n\
-# >> ")
-# castle.castle_image()
-# print("*  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *")
-# print("There are",Room.number_of_rooms,"rooms in the castle to explore.")
-# print("The Beast is not known for taking visitors, so he will take some \
-# convincing.  \n\
-# He has friends in the castle, and if you make a good impression \
-# they might pass along a good word for you.  \n\
-# They will update you on his mood as you meet them.")
-# print("Thanks to your study of the legend of the Beast, you know to keep an \
-# eye open for anything related to his enchanted rose.")
-# print("*  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *")
-# input("Press enter to walk into the castle.")
-# ### In here we need information about how to play the game,
-# # ie enter a for option [a] and such
+print("-----")
+castle.intro()
+input("Press enter to continue.\n\
+>> ")
+castle.castle_image()
+print("*  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *")
+print("There are",Room.number_of_rooms,"rooms in the castle to explore.")
+print("The Beast is not known for taking visitors, so he will take some \
+convincing.  \n\
+He has friends in the castle, and if you make a good impression \
+they might pass along a good word for you.  \n\
+They will update you on his mood as you meet them.")
+print("Thanks to your study of the legend of the Beast, you know to keep an \
+eye open for anything related to his enchanted rose.")
+print("*  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *")
+input("Press enter to walk into the castle.")
+### In here we need information about how to play the game,
+# ie enter a for option [a] and such
 
 
 # Starting the game options
