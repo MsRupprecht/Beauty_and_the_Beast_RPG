@@ -289,10 +289,11 @@ beast.increase_heart()
 
 lefou.set_as_distracted()
 bimbettes.set_as_distracted()
+gaston.set_as_distracted()
 posse.set_as_distracted()
 
 bag.set_contents(eggs)
-
+bag.set_contents(mead)
 
 
 
@@ -581,6 +582,8 @@ What do you want?\n\
                                                                     if character.get_weakness() == combat_item_str:
                                                                         print(character.get_name(), "was distracted by the", combat_item_str+".")
                                                                         character.set_as_distracted()
+                                                                for character in Enemy.active_list:
+                                                                    print(character.get_name(),"is still active and looks menacing.")
                                                                 # Remove item from my bag
                                                                 combat_item = None
                                                                 for item in bag.get_contents():
@@ -596,7 +599,7 @@ What do you want?\n\
                                                                 # If there are still enemies, but no items left
                                                                 # End fighting and end game.
                                                                 elif len(bag.get_contents()) == 0:
-                                                                    print("Your bag is empty, but the enemies are still pushing forward.")
+                                                                    print("Your bag is empty, and the enemies are still pushing forward.")
                                                                     print("There is a struggle.  The fight moves towards the window and you see the Beast lose his balance.")
                                                                     print("The enemies of the Beast were not fully distracted, and defenestrated him before you were able to convince him to change his ways and see to the needs of the community.")
                                                                     fighting = False
