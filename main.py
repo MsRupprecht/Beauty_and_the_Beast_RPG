@@ -272,10 +272,37 @@ input("Press any key to enter the castle.")
 # ie enter a for option [a] and such
 
 
+
+####### TESTING CODE: SETTING TEST CONDITIONS #############
+# Test 2
+bag.set_contents(petal1)
+bag.set_contents(petal2)
+bag.set_contents(petal3)
+bag.set_contents(petal6)
+bag.set_contents(petal5)
+
+beast.increase_heart()
+beast.increase_heart()
+beast.increase_heart()
+beast.increase_heart()
+beast.increase_heart()
+
+lefou.set_as_distracted()
+bimbettes.set_as_distracted()
+posse.set_as_distracted()
+
+bag.set_contents(eggs)
+
+
+
+
+
+######## END TESTING CODE TO SET TEST CONDITIONS ###########
+
+
 # Starting the game options
 
 while playing == True:
-
 
     current_room.print_basic_room_description()
     # Level One Menu - What to do in the room
@@ -503,11 +530,12 @@ What do you want?\n\
                                                     print("The Beast is ready to talk.")
 
                                                     # If any enemies remain active
-                                                    if Enemy.distracted_enemies < 4:
+                                                    while Enemy.distracted_enemies < 4 and playing == True:
                                                         print("You move towards the Beast, but hear a rustling behind you.")
                                                         command4C = input("What do you do?\n\
 [a] Give the Beast your full attention and introduce yourself.\n\
-[b] Turn and investigate the noise")
+[b] Turn and investigate the noise\n\
+>> ")
 
                                                         # Ignore noise, straight to defenestration scene
                                                         if command4C.lower() == "a":
@@ -543,15 +571,16 @@ What do you want?\n\
 
                                                             #loop here to go through all the items in my bag to try to distract the enemy/enemies
                                                             fighting = True
-                                                            while fighting == True and len(bag.get_contents) != 0:
+                                                            while fighting == True and len(bag.get_contents()) != 0:
                                                                 # Select combat item
-                                                                print(bag.get_contents_names)
-                                                                combat_item_str = input("What will you use to fend off the {}".format("enemy?" if len(Enemy.active_list) == 1 else "enemies?"))
+                                                                print(bag.get_contents_names())
+                                                                combat_item_str = input("What will you use to fend off the {}".format("enemy?\n>> " if len(Enemy.active_list) == 1 else "enemies?\n>> "))
                                                                 
                                                                 # Check if it is a successful distraction
                                                                 for character in Enemy.active_list:
                                                                     if character.get_weakness() == combat_item_str:
-                                                                        print(character.get_name(), "was distracted by the", combat_item_str)
+                                                                        print(character.get_name(), "was distracted by the", combat_item_str+".")
+                                                                        character.set_as_distracted()
                                                                 # Remove item from my bag
                                                                 combat_item = None
                                                                 for item in bag.get_contents():
@@ -566,7 +595,7 @@ What do you want?\n\
                                                                 
                                                                 # If there are still enemies, but no items left
                                                                 # End fighting and end game.
-                                                                elif len(bag.get_contents) == 0:
+                                                                elif len(bag.get_contents()) == 0:
                                                                     print("Your bag is empty, but the enemies are still pushing forward.")
                                                                     print("There is a struggle.  The fight moves towards the window and you see the Beast lose his balance.")
                                                                     print("The enemies of the Beast were not fully distracted, and defenestrated him before you were able to convince him to change his ways and see to the needs of the community.")
@@ -583,7 +612,7 @@ What do you want?\n\
                                                             option3C = False
 
                                                     # If all enemies are distracted --> Winning end scene
-                                                    else:
+                                                    if playing == True:
                                                         print("You sit down with the Beast and introduce yourself,  You explain that you are from the surrounding village and undertand that there is a lot of misinformation about the him and his history.")
                                                         print("The Beast is a bit uncomfortable, but appreciates your point of view.")
                                                         print("You tell him that the kingdom is in need of leadership with the resources to make postive changes, and that it would really help if he could start participating in public life again.  If he would just come out and see what people are going through, he would understand.")
@@ -605,7 +634,7 @@ What do you want?\n\
                                                                 print("You explain that with proper funding, the food bank would be able to serve every member of the community that was in need.  And even more important is proper funding and support for the kingdom's agriculture sector.  Cooperative planning amongst the different farms will help prevent the shortages of staple crops in the future.")
                                                                 option_end1 = False
                                                             else:
-                                                                print(".\n.\n.\n.    Please try again.\n.\n.\n.\n")
+                                                                print(".\n.\n.\n.    Please try again.\n.\n.\n.\n") 
                                                         
                                                         
                                                         print("The Beast sits stands up and starts to pace.")
@@ -614,10 +643,10 @@ What do you want?\n\
 
                                                         option_end2 = True
                                                         while option_end2 == True:
-                                                            response = ("How do you want to respond to the Beast?\n\
-    [a] That is understandable, given what you went through when you were so young. \n\
-    [b] Huff, and roll your eyes. \n\
-    >> ")
+                                                            response = input("How do you want to respond to the Beast?\n\
+[a] That is understandable, given what you went through when you were so young. \n\
+[b] Huff, and roll your eyes. \n\
+>> ")
                                                             if response.lower() == "a":
                                                                 print("Thank you for understanding.")
                                                                 option_end2 = False
@@ -626,7 +655,7 @@ What do you want?\n\
                                                                 print("You respond with an apology, and remember that you are here to try to move things forward, not take out your frustrations.")
                                                                 option_end2 = False
                                                             else:
-                                                                print(".\n.\n.\n.    Please try again.\n.\n.\n.\n")
+                                                                print(".\n.\n.\n.    Please try again.\n.\n.\n.\n") 
                                                         
                                                         print("Well, now that you know what is happening, and that there are solutions within your control, let's do something about it.")
                                                         print("The Beast agrees, and vows to work with his kingdom and for his kingdom.")
@@ -647,6 +676,7 @@ What do you want?\n\
                                                                 print("Inside your bag you see a day planner, ready for scheduling projects and brainstorming ways to serve the kingdom.")
                                                                 print("You hear the Beast ask, 'What's next?' and you know things will work out just fine.")
                                                                 option_end3 = False
+                                                                optionA = False
                                                                 playing = False
                                                             elif choice.lower() == "b":
                                                                 print("You think there has been more than enough excitement for one day, and it is probably time for everyone to get a good rest.")
@@ -654,14 +684,16 @@ What do you want?\n\
                                                                 print("The Beast offers you a room in the East Wing of the castle, which you accept, as your home is rather far away.")
                                                                 print("In the morning, after you visit the kitchen for some breakfast, you hear noises in the library.  As you approach, you realise the Beast has gathered his enemies from around the castle and is holding his first town hall meeting.  He looks flustered, but is listening and taking notes.  You're optimistic that this is your opportunity to work hard and work worth doing.")
                                                                 option_end3 = False
+                                                                optionA = False
                                                                 playing = False
-                                                            else:print(".\n.\n.\n.    Please try again.\n.\n.\n.\n")
+                                                            else:print("\n.\n.\n.    Please try again.\n.\n.\n.\n") 
                                                         option3C = False 
+                                                        optionA = False
                                                         playing = False
 
                                                 
                                                 # If the petals do not yet boost the Beast to full power
-                                                else:
+                                                if inhabitant.get_heart() < 10:
                                                     print("The Beast is not ready to talk yet.  There are two ways to convince the Beast to speak with you: encouragement from his friends in the castle, or rose petals to weaken the curse.  Only then will when all his friends are supporting him and the rose is full will the spell be weak enough for the Beast to see clearly.")
                                                     option3C = False
                                                     option2A = False
@@ -673,13 +705,13 @@ What do you want?\n\
                                     
                                     # Incorrect menu option, loop back up
                                     else:
-                                        print(".\n.\n.\n.    Please try again.\n.\n.\n.\n")
+                                        print(".\n.\n.\n.    Please try again.\n.\n.\n.\n") 
                                 
                                 # End character interaction menu
                                 option2A = False
                             # Incorrect menu option, loop back up
                         else:
-                            print(".\n.\n.\n.    Please try again.\n.\n.\n.\n")
+                            print(".\n.\n.\n.    Please try again.\n.\n.\n.\n") 
                 
                 # Walk away from the character
                 elif command2.lower() == "b":
@@ -687,7 +719,7 @@ What do you want?\n\
 
                 # Incorrect menu option, loop back up
                 else:
-                    print(".\n.\n.\n.    Please try again.\n.\n.\n.\n")
+                    print(".\n.\n.\n.    Please try again.\n.\n.\n.\n") 
 
             
             # No characters present to interact with, loop back up to room choice menu
@@ -792,7 +824,7 @@ Use the full direction name.\n\
     
     # Incorrect menu choice - loop back to level one menu
     else:
-        print(".\n.\n.\n.    Please try again.\n.\n.\n.\n")
+        print(".\n.\n.\n.    Please try again.\n.\n.\n.\n") 
 
 # Game Over
 print("\n\
