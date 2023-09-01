@@ -272,35 +272,6 @@ input("Press any key to enter the castle.")
 # ie enter a for option [a] and such
 
 
-
-####### TESTING CODE: SETTING TEST CONDITIONS #############
-# Test 2
-bag.set_contents(petal1)
-bag.set_contents(petal2)
-bag.set_contents(petal3)
-bag.set_contents(petal6)
-bag.set_contents(petal5)
-
-beast.increase_heart()
-beast.increase_heart()
-beast.increase_heart()
-beast.increase_heart()
-beast.increase_heart()
-
-lefou.set_as_distracted()
-bimbettes.set_as_distracted()
-gaston.set_as_distracted()
-posse.set_as_distracted()
-
-bag.set_contents(eggs)
-bag.set_contents(mead)
-
-
-
-
-######## END TESTING CODE TO SET TEST CONDITIONS ###########
-
-
 # Starting the game options
 
 while playing == True:
