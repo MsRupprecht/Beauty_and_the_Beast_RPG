@@ -67,6 +67,7 @@ class Enemy(Character):
         self.distracted = False
         Enemy.enemy_list.append(self)
         Enemy.active_list.append(self)
+        self.response = None
 
         
     # Set the enemy's weakness
@@ -88,6 +89,14 @@ class Enemy(Character):
             item_names.append(item.name)
         return item_names
     
+    # Set the enemy's response to why they are here
+    def set_response(self,response_text):
+        self.response = response_text
+    
+    # Get enemy's response to why they are here
+    def get_response(self):
+        return self.response   
+    
     # Set as distracted
     def set_as_distracted(self):
         self.distracted = True
@@ -108,13 +117,13 @@ class Enemy(Character):
     def fight(self,combat_item,player_backpack):
         if self.combat_count == 0:
             if combat_item.get_name() == self.weakness:
-                print("You distract",self.name,"with the",combat_item.get_name())
+                print("*  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *\n\n\nYou distract",self.name,"with the",combat_item.get_name(),"\n\n\n")
                 self.combat_count = self.combat_count + 1
                 self.backpack.set_contents(combat_item)
                 player_backpack.remove_contents(combat_item)
                 self.set_as_distracted()
             else:
-                print(self.name,"isn't interested in",combat_item.get_name()+".")
+                print("*  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *\n\n\n"+self.name,"isn't interested in",combat_item.get_name()+".")
                 self.combat_count = self.combat_count + 1
                 if player_backpack.get_petal_count() > 0:
                     stolen = False
@@ -124,12 +133,13 @@ class Enemy(Character):
                                 player_backpack.remove_contents(item)
                                 player_backpack.subtract_petal()
                                 self.backpack.set_contents(item)
+                                self.backpack.add_petal()
                                 stolen = True
-                    print("You notice your backpack feels a little lighter.")
+                    print("You notice your backpack feels a little lighter.\n\n\n")
                 
         else:
             if combat_item.get_name() == self.weakness:
-                print("You distract",self.name,"with the",combat_item.get_name())
+                print("*  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *\n\n\nYou distract",self.name,"with the",combat_item.get_name())
                 self.combat_count = self.combat_count + 1
                 self.backpack.set_contents(combat_item)
                 player_backpack.remove_contents(combat_item)
@@ -137,10 +147,12 @@ class Enemy(Character):
                 for item in self.backpack.get_contents():
                     if isinstance(item,Petal):
                         self.backpack.remove_contents(item)
+                        self.backpack.subtract_petal()
                         player_backpack.set_contents(item)
-                print("Your bag feels a bit heavier.")
+                        player_backpack.add_petal()
+                print("Your bag feels a bit heavier.\n\n\n")
             else:
-                print(self.name,"isn't interested in",combat_item.get_name()+".")
+                print("*  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *\n\n\n"+self.name,"isn't interested in",combat_item.get_name()+".\n\n\n")
                 self.combat_count = self.combat_count + 1
 
     def get_fight_history(self):
@@ -149,11 +161,11 @@ class Enemy(Character):
     
     def ask_petal_count(self):
         if self.backpack.get_petal_count() == 0:
-            print("No, I do not have any rose petals.")
+            print("No, {} do not have any rose petals.".format("I" if self.get_name() == "lefou" or self.get_name() == "gaston" else "we"))
         elif self.backpack.get_petal_count() == 1:
-            print("Yes, I have a rose petal.\nIf you found my favourite item in the castle, I might consider a trade.")
+            print("Yes, {} have a rose petal.\nIf you found {} favourite item in the castle, {} might consider a trade.".format("I" if self.get_name() == "lefou" or self.get_name() == "gaston" else "we","my" if self.get_name() == "lefou" or self.get_name() == "gaston" else "our","I" if self.get_name() == "lefou" or self.get_name() == "gaston" else "we"))
         else:
-            print("I have",self.backpack.get_petal_count(),"rose petals.\nIf you found my favourite item in the castle, I might consider a trade.") 
+            print("{} have",self.backpack.get_petal_count(),"rose petals.\nIf you found {} favourite item in the castle, {} might consider a trade.".format("I" if self.get_name() == "lefou" or self.get_name() == "gaston" else "we","my" if self.get_name() == "lefou" or self.get_name() == "gaston" else "our","I" if self.get_name() == "lefou" or self.get_name() == "gaston" else "we"))
 
 
 
