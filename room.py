@@ -97,6 +97,6 @@ class Room:
 
 
     def print_basic_room_description(self):
-        print("-----")
+        print("*  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *\n\n\n")
         print("Current room: The",self.name)
-        print("Description:",self.description)
+        print("Description:",self.description,"\n\n\n")
